@@ -1,5 +1,7 @@
+#include <cstddef>
 #include <functional>
 #include <iostream>
+#include <iomanip>
 #include <list>
 #include <vector>
 #include <thread>
@@ -8,15 +10,15 @@
 
 using namespace std;
 
-constexpr size_t PEOPLE_COUNT=600;
-constexpr int thread_loop_count=5*1e5;
+constexpr size_t PEOPLE_COUNT=2*2*2*2*2*2*2*2*2*2;
+constexpr int thread_loop_count=1e5;
 constexpr int thread_count=16;
 constexpr int remain_people_count=1;
 
 
 struct thread_data{
-    int counts[PEOPLE_COUNT]={};
-    int rounds[PEOPLE_COUNT]={};
+    long long counts[PEOPLE_COUNT]={};
+    long long rounds[PEOPLE_COUNT]={};
 };
 
 void thread_func(thread_data& data){
@@ -51,6 +53,9 @@ void thread_func(thread_data& data){
         for(auto& i:people){
             data.counts[i-1]+=1; 
         }
+        // if(i%(int)(5*1e4)==0){
+        //     cout<<"一个线程算了5*1e4次模拟"<<endl;
+        // }
     }
     for(int i=0;i<PEOPLE_COUNT;i++){
         data.rounds[i]/=thread_loop_count; 
@@ -83,7 +88,7 @@ int main(){
     }
 
     for(int j=0;j<PEOPLE_COUNT;j++){
-        cout<<j+1<<"\t最后存活次数："<<final_data.counts[j]<<"\t平均存活轮数："<<final_data.rounds[j]<<endl;
+        cout<<j+1<<"\t最后存活概率："<<std::fixed << std::setprecision(9) <<(double)final_data.counts[j]/(thread_count*thread_loop_count)<<"\t平均存活轮数："<<final_data.rounds[j]<<endl;
     }
 
     
